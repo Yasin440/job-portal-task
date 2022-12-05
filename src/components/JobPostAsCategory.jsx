@@ -1,15 +1,18 @@
 import { Box, List, Paper, Collapse, Container, Typography, ListItemText, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import JobViewModal from './JobViewModal';
 import { Link } from 'react-router-dom';
+import useAuth from '../customHooks/useAuth';
 
 
 const JobPostAsCategory = () => {
     const [expanded, setExpanded] = useState({ 0: false });
     const [openModal, setOpenModal] = useState(false);
     const [showPost, setShowPost] = useState({});
+    const { getAllJobPost, jobPost } = useAuth();
+    console.log(jobPost);
     const handleShowJob = (index) => {
         setExpanded({ [index]: !expanded[index] || false });
     };
@@ -17,6 +20,11 @@ const JobPostAsCategory = () => {
         setOpenModal(true);
         setShowPost(post);
     }
+    //get all job
+    useEffect(() => {
+        getAllJobPost();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
     const Data = [
         {
             category: 'Development',

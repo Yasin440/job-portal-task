@@ -3,9 +3,9 @@ import useAuthAction from "../../actions/authAction";
 
 export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
-  const AllContext = useAuthAction()
+  const auth = useAuthAction();
   return (
-    <AuthContext.Provider value={AllContext}>
+    <AuthContext.Provider value={auth}>
       {children}
     </AuthContext.Provider>
   )

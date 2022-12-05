@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const { MongoClient } = require('mongodb');
-const { registerUser, loginUser, createNewJobPost } = require('./controllers/authController');
+const { registerUser, loginUser } = require('./controllers/authController');
+const { createNewJobPost, getAllJobPost } = require('./controllers/postController');
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ const run = async () => {
     app.post('/register-user', registerUser(users));
     app.post('/login-user', loginUser(users));
     app.post('/add-new-job', createNewJobPost(users, allJobPosts));
+    app.post('/get-all-post', getAllJobPost(users, allJobPosts));
 
   } finally {
     // await client.close()

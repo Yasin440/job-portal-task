@@ -6,7 +6,8 @@ import jwtDecode from "jwt-decode";
 const useAuthAction = () => {
   const [loading, setLoading] = useState(false);
   const [logout, setLogout] = useState(false);
-  const [user, SetUser] = useState(false);
+  const [user, setUser] = useState(false);
+  const [jobPost, setJodPost] = useState(false);
 
   const baseUrl = 'http://localhost:5000'
   const decodeToken = token => {
@@ -26,11 +27,12 @@ const useAuthAction = () => {
     if (token) {
       const user = decodeToken(token);
       const { name, email } = user;
-      SetUser({ name, email })
+      setUser({ name, email })
     } else if (!token) {
-      SetUser(false);
+      setUser(false);
     }
   }, [loading, logout])
+
   //user registration
   const registerUser = async (signUpData) => {
     setLoading(true);
@@ -50,7 +52,8 @@ const useAuthAction = () => {
       toast.error(`${error?.response?.data?.error?.message}`);
       setLoading(false)
     }
-  }
+  };
+
   //login user
   const loginUser = async (data) => {
     setLoading(true);
@@ -71,7 +74,8 @@ const useAuthAction = () => {
       setLoading(false)
     }
 
-  }
+  };
+
   //add new post 
   const addNewJob = async (jobData) => {
     setLoading(true);
@@ -94,14 +98,40 @@ const useAuthAction = () => {
       toast.error(`${error.response.data.error.message}`);
       setLoading(false)
     }
+  };
+
+  //get all posts
+  const getAllJobPost = async () => {
+    setLoading(true);
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          authtoken: token
+        }
+      }
+      try {
+        const res = await axios.post(`${baseUrl}/get-all-post`, user, config);
+        setJodPost(res.data.data);
+        toast.success(`${res.data.success.message}`)
+      } catch (err) {
+        toast.error(`${err.response.data.error.message}`);
+      }
+    } else {
+      toast.error('Unauthorized');
+    }
   }
+
   return {
     registerUser,
     loginUser,
     addNewJob,
+    getAllJobPost,
     loading,
     setLoading,
     setLogout,
+    jobPost,
     user
   };
 }
