@@ -3,7 +3,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const { MongoClient } = require('mongodb');
 const { registerUser, loginUser } = require('./controllers/authController');
-const { createNewJobPost, getAllJobPost } = require('./controllers/postController');
+const { createNewJobPost, getAllJobPost, deleteJobPost } = require('./controllers/postController');
 
 dotenv.config();
 
@@ -30,6 +30,7 @@ const run = async () => {
     app.post('/login-user', loginUser(users));
     app.post('/add-new-job', createNewJobPost(users, allJobPosts));
     app.post('/get-all-post', getAllJobPost(users, allJobPosts));
+    app.delete('/delete-post/:id', deleteJobPost(allJobPosts));
 
   } finally {
     // await client.close()

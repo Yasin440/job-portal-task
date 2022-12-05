@@ -25,8 +25,9 @@ const crossStyle = {
     cursor: 'pointer'
 }
 
-const JobViewModal = ({ openModal, setOpenModal, post }) => {
-    const { name, company_name, overview, responsibilities, requirements, level, shift, type, location } = post;
+const JobViewModal = ({ openModal, setOpenModal, item }) => {
+    const { position_name, company_name, overview, responsibilities, requirements, level, shift, type, location } = item.post;
+    console.log(item);
     return (
         <div>
             <Modal
@@ -38,10 +39,13 @@ const JobViewModal = ({ openModal, setOpenModal, post }) => {
                 <Box sx={style}>
                     <Typography id="modal-modal-title" component='div' sx={{ display: 'flex', alignItems: 'center', height: '15%' }}>
                         <Typography id="modal-modal-title" variant="h5" sx={{ pr: 4, borderRight: '1px solid darkgray', mr: 2 }}>
-                            {name}
+                            {position_name}
                         </Typography>
-                        <Typography id="modal-modal-title" variant="p" sx={{ width: 'fit-content', }}>
+                        <Typography id="modal-modal-title" variant="p" sx={{ pr: 4, borderRight: '1px solid darkgray', mr: 2 }}>
                             {company_name}
+                        </Typography>
+                        <Typography id="modal-modal-title" component="span" sx={{ width: 'fit-content', fontSize: '12px', color: 'cadetblue' }}>
+                            Added by: {item.user.name}
                         </Typography>
                     </Typography>
                     <Box sx={{ height: '70%', overflowY: 'scroll', mb: '18px' }}>

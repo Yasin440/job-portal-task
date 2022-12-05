@@ -55,3 +55,13 @@ a {
   color: #fff !important;
   background-color: #000;
 }
+
+.deleteBtn {
+  margin-right: 10px;
+  padding: 7px;
+  border-radius: 2rem;
+}
+
+.deleteBtn:hover {
+  background-color: tomato;
+}

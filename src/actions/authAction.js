@@ -8,6 +8,7 @@ const useAuthAction = () => {
   const [logout, setLogout] = useState(false);
   const [user, setUser] = useState(false);
   const [jobPost, setJodPost] = useState(false);
+  console.log("jobPost", jobPost);
 
   const baseUrl = 'http://localhost:5000'
   const decodeToken = token => {
@@ -89,12 +90,10 @@ const useAuthAction = () => {
     try {
       const res = await axios.post(`${baseUrl}/add-new-job`, jobData, config);
       if (res) {
-        console.log('add-new-job', res);
         toast.success(`${res.data.success.message}`);
         setLoading(false)
       }
     } catch (error) {
-      console.log('add-new-job', error);
       toast.error(`${error.response.data.error.message}`);
       setLoading(false)
     }
@@ -102,7 +101,6 @@ const useAuthAction = () => {
 
   //get all posts
   const getAllJobPost = async () => {
-    setLoading(true);
     const token = localStorage.getItem('authToken');
     if (token) {
       const config = {
@@ -114,12 +112,24 @@ const useAuthAction = () => {
       try {
         const res = await axios.post(`${baseUrl}/get-all-post`, user, config);
         setJodPost(res.data.data);
-        toast.success(`${res.data.success.message}`)
       } catch (err) {
         toast.error(`${err.response.data.error.message}`);
       }
     } else {
       toast.error('Unauthorized');
+    }
+  }
+  const deletePost = async (id) => {
+    try {
+      const res = await axios.delete(`${baseUrl}/delete-post/${id}`,);
+      if (res) {
+        console.log('delete-job', res);
+        toast.success(`${res.data.success.message}`);
+
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(`${error.response.data.error.message}`);
     }
   }
 
@@ -131,6 +141,7 @@ const useAuthAction = () => {
     loading,
     setLoading,
     setLogout,
+    deletePost,
     jobPost,
     user
   };

@@ -1,6 +1,7 @@
 import { Box, List, Paper, Collapse, Container, Typography, ListItemText, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useEffect, useState } from 'react';
 import JobViewModal from './JobViewModal';
 import { Link } from 'react-router-dom';
@@ -11,76 +12,23 @@ const JobPostAsCategory = () => {
     const [expanded, setExpanded] = useState({ 0: false });
     const [openModal, setOpenModal] = useState(false);
     const [showPost, setShowPost] = useState({});
-    const { getAllJobPost, jobPost } = useAuth();
-    console.log(jobPost);
+    const { getAllJobPost, jobPost, deletePost } = useAuth();
     const handleShowJob = (index) => {
         setExpanded({ [index]: !expanded[index] || false });
     };
-    const handleShowModal = (post) => {
+    const handleShowModal = (item) => {
         setOpenModal(true);
-        setShowPost(post);
+        setShowPost(item);
+    }
+    //deletePost
+    const handleDeletePost = (id) => {
+        deletePost(id);
     }
     //get all job
     useEffect(() => {
         getAllJobPost();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-    const Data = [
-        {
-            category: 'Development',
-            post: [
-                {
-                    name: 'Front End Developer',
-                    company_name: 'TechForing Ltd',
-                    overview: 'We are looking for a JavaScript developer who is proficient with React.js. Your primary focus will be on developing user interface components and implementing them. You will ensure that these components and the overall application are robust and easy to maintain. You will coordinate with the rest of the team working on different layers of the infrastructure. Therefore, a commitment to collaborative problem solving, sophisticated design, and quality products are important.',
-                    responsibilities: 'Developing new user-facing features using React.js.Building reusable components and front-end libraries for future use.Translating designs and wireframes into high-quality code.Optimizing components for maximum performance across a vast array of web-capable devices and browsers.',
-                    requirements: 'Bachelor’s degree in CSE. For the people who have at least 1 year of experience in React js. Freshers are also encouraged to apply.',
-                    type: 'fill time',
-                    location: 'dhaka',
-                    level: 'mid level',
-                    shift: 'day'
-                },
-                {
-                    name: 'Backend End Developer',
-                    company_name: 'TechForing Ltd',
-                    overview: 'We are looking for a JavaScript developer who is proficient with React.js. Your primary focus will be on developing user interface components and implementing them. You will ensure that these components and the overall application are robust and easy to maintain. You will coordinate with the rest of the team working on different layers of the infrastructure. Therefore, a commitment to collaborative problem solving, sophisticated design, and quality products are important.',
-                    responsibilities: 'Developing new user-facing features using React.js.Building reusable components and front-end libraries for future use.Translating designs and wireframes into high-quality code.Optimizing components for maximum performance across a vast array of web-capable devices and browsers.',
-                    requirements: 'Bachelor’s degree in CSE. For the people who have at least 1 year of experience in React js. Freshers are also encouraged to apply.',
-                    type: 'fill time',
-                    location: 'dhaka',
-                    level: 'mid level',
-                    shift: 'day'
-                },
-            ]
-        },
-        {
-            category: 'Marketing',
-            post: [
-                {
-                    name: 'Marketing Manager',
-                    company_name: 'TechForing Ltd',
-                    overview: 'We are looking for a JavaScript developer who is proficient with React.js. Your primary focus will be on developing user interface components and implementing them. You will ensure that these components and the overall application are robust and easy to maintain. You will coordinate with the rest of the team working on different layers of the infrastructure. Therefore, a commitment to collaborative problem solving, sophisticated design, and quality products are important.',
-                    responsibilities: 'Developing new user-facing features using React.js.Building reusable components and front-end libraries for future use.Translating designs and wireframes into high-quality code.Optimizing components for maximum performance across a vast array of web-capable devices and browsers.',
-                    requirements: 'Bachelor’s degree in CSE. For the people who have at least 1 year of experience in React js. Freshers are also encouraged to apply.',
-                    type: 'fill time',
-                    location: 'dhaka',
-                    level: 'mid level',
-                    shift: 'day'
-                },
-                {
-                    name: 'Sales executive',
-                    company_name: 'TechForing Ltd',
-                    overview: 'We are looking for a JavaScript developer who is proficient with React.js. Your primary focus will be on developing user interface components and implementing them. You will ensure that these components and the overall application are robust and easy to maintain. You will coordinate with the rest of the team working on different layers of the infrastructure. Therefore, a commitment to collaborative problem solving, sophisticated design, and quality products are important.',
-                    responsibilities: 'Developing new user-facing features using React.js.Building reusable components and front-end libraries for future use.Translating designs and wireframes into high-quality code.Optimizing components for maximum performance across a vast array of web-capable devices and browsers.',
-                    requirements: 'Bachelor’s degree in CSE. For the people who have at least 1 year of experience in React js. Freshers are also encouraged to apply.',
-                    type: 'fill time',
-                    location: 'dhaka',
-                    level: 'mid level',
-                    shift: 'day'
-                },
-            ]
-        }
-    ]
     return (
         <div>
             <Container>
@@ -95,15 +43,15 @@ const JobPostAsCategory = () => {
                     We are always on the lookout for talanted people
                 </Typography>
                 <Box sx={{ marginTop: '60px' }}>
-                    {Data?.map((item, index) => (
+                    {jobPost.allCategory?.map((category, index) =>
+                    (
                         <Paper key={index} className='jobCategoryCard' >
                             <Box onClick={() => handleShowJob(index)} sx={{ display: 'flex', alignItems: 'center', padding: '12px 0' }}>
                                 <Typography
                                     component='p'
                                     sx={{ fontSize: { xs: '17px', md: '19px' }, fontWeight: '600', width: '100%' }}
-                                > {item.category}</Typography>
+                                > {category}</Typography>
                                 {!expanded[index] ?
-
                                     <AddIcon
                                         onClick={() => handleShowJob(index)}
                                         expand={expanded}
@@ -126,21 +74,33 @@ const JobPostAsCategory = () => {
                                     component='div'
                                 >
                                     {
-                                        item.post?.map((post, index2) => (
-                                            <ListItemText
-                                                key={index2}
-                                                className='listItem'
-                                                sx={{ bgcolor: 'background.paper' }}
-                                                primary={
-                                                    <>
-                                                        <Typography sx={{ textTransform: 'capitalize' }}>{post.name}</Typography>
-                                                        <Button
-                                                            onClick={() => handleShowModal(post)}
-                                                        >apply now</Button>
-                                                    </>
-                                                }
-                                            />
-                                        ))
+                                        // eslint-disable-next-line array-callback-return
+                                        jobPost.posts?.map((item, index2) => {
+                                            if (category === item.category) {
+                                                return (
+                                                    <ListItemText
+                                                        key={index2}
+                                                        className='listItem'
+                                                        sx={{ bgcolor: 'background.paper' }}
+                                                        primary={
+                                                            <>
+                                                                <Typography sx={{ textTransform: 'capitalize' }}>{item.post.position_name}</Typography>
+                                                                <Typography sx={{ display: 'flex', alignItems: 'center' }}>
+                                                                    <DeleteIcon
+                                                                        className='deleteBtn' fontSize="small"
+                                                                        onClick={() => handleDeletePost(item._id)} />
+                                                                    <Button
+                                                                        onClick={() => handleShowModal(item)}
+                                                                    >
+                                                                        apply now
+                                                                    </Button>
+                                                                </Typography>
+                                                            </>
+                                                        }
+                                                    />
+                                                )
+                                            }
+                                        })
                                     }
                                 </List>
                             </Collapse>
@@ -148,7 +108,7 @@ const JobPostAsCategory = () => {
                     ))}
                 </Box>
                 {/* job view modal */}
-                <JobViewModal openModal={openModal} setOpenModal={setOpenModal} post={showPost} />
+                {openModal && <JobViewModal openModal={openModal} setOpenModal={setOpenModal} item={showPost} />}
                 {/* add post btn */}
                 <Typography component='div' align='center' sx={{ mt: 8 }}>
                     <Link to='/add_new_job_post'>
