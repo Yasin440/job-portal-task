@@ -27,7 +27,6 @@ const crossStyle = {
 
 const JobViewModal = ({ openModal, setOpenModal, item }) => {
     const { position_name, company_name, overview, responsibilities, requirements, level, shift, type, location } = item.post;
-    console.log(item);
     return (
         <div>
             <Modal

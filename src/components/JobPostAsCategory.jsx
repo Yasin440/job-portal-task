@@ -12,7 +12,7 @@ const JobPostAsCategory = () => {
     const [expanded, setExpanded] = useState({ 0: false });
     const [openModal, setOpenModal] = useState(false);
     const [showPost, setShowPost] = useState({});
-    const { getAllJobPost, jobPost, deletePost } = useAuth();
+    const { getAllJobPost, jobPost, deletePost, user } = useAuth();
     const handleShowJob = (index) => {
         setExpanded({ [index]: !expanded[index] || false });
     };
@@ -86,9 +86,11 @@ const JobPostAsCategory = () => {
                                                             <>
                                                                 <Typography sx={{ textTransform: 'capitalize' }}>{item.post.position_name}</Typography>
                                                                 <Typography sx={{ display: 'flex', alignItems: 'center' }}>
-                                                                    <DeleteIcon
-                                                                        className='deleteBtn' fontSize="small"
-                                                                        onClick={() => handleDeletePost(item._id)} />
+                                                                    {item.user.email === user.email &&
+                                                                        <DeleteIcon
+                                                                            className='deleteBtn' fontSize="small"
+                                                                            onClick={() => handleDeletePost(item._id)}
+                                                                        />}
                                                                     <Button
                                                                         onClick={() => handleShowModal(item)}
                                                                     >

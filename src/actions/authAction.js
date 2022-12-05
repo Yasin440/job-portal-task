@@ -8,7 +8,6 @@ const useAuthAction = () => {
   const [logout, setLogout] = useState(false);
   const [user, setUser] = useState(false);
   const [jobPost, setJodPost] = useState(false);
-  console.log("jobPost", jobPost);
 
   const baseUrl = 'http://localhost:5000'
   const decodeToken = token => {
@@ -121,15 +120,21 @@ const useAuthAction = () => {
   }
   const deletePost = async (id) => {
     try {
+      setLoading(true);
       const res = await axios.delete(`${baseUrl}/delete-post/${id}`,);
       if (res) {
         console.log('delete-job', res);
         toast.success(`${res.data.success.message}`);
-
+        const filtered = jobPost.posts.filter(post => post._id !== id);
+        setJodPost({
+          ...jobPost, posts: filtered
+        })
+        setLoading(false);
       }
     } catch (error) {
       console.log(error);
       toast.error(`${error.response.data.error.message}`);
+      setLoading(false);
     }
   }
 
