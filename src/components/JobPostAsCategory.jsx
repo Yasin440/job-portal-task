@@ -12,7 +12,6 @@ const JobPostAsCategory = () => {
     const [showPost, setShowPost] = useState({});
     const handleShowJob = (index) => {
         setExpanded({ [index]: !expanded[index] || false });
-        console.log(expanded);
     };
     const handleShowModal = (post) => {
         setOpenModal(true);

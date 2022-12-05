@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { Container, TextField, Grid, Typography, Select, MenuItem, InputLabel, Button, FormControl } from '@mui/material';
 import useAuthAction from '../actions/authAction';
 import useAuth from '../customHooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const AddJobForm = () => {
-   const { user } = useAuth();
+   const { user, loading } = useAuth();
+   const navigate = useNavigate();
    let initialData = {
       company_name: '',
       department_name: '',
@@ -29,10 +31,11 @@ const AddJobForm = () => {
    const newJob = {
       user, category: department_name, post: { company_name, position_name, overview, responsibilities, requirements, type, level, shift, location }
    }
-   const handleSubmit = e => {
+   const handleSubmit = async (e) => {
       e.preventDefault();
-      addNewJob(newJob)
-      console.log(newJob);
+      await addNewJob(newJob);
+      navigate('/all_job_post');
+      setFormData(initialData);
    }
    const department = ['Sales & Marketing', 'Digital Marketing', 'Management', 'Human Resource', 'Administration', 'Development', 'Engineering', 'Creative'];
    return (
@@ -192,6 +195,7 @@ const AddJobForm = () => {
                   </Grid>
                   <Typography align='center' component='div' sx={{ mt: 6 }}>
                      <Button
+                        disabled={loading}
                         sx={{ padding: '8px 30px', fontSize: '14px', mt: 'auto' }}
                         variant='contained'
                         type='submit'

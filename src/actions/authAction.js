@@ -74,7 +74,7 @@ const useAuthAction = () => {
   }
   //add new post 
   const addNewJob = async (jobData) => {
-    // setLoading(true);
+    setLoading(true);
     const token = localStorage.getItem('authToken');
     const config = {
       headers: {
@@ -87,12 +87,12 @@ const useAuthAction = () => {
       if (res) {
         console.log('add-new-job', res);
         toast.success(`${res.data.success.message}`);
-        // setLoading(false)
+        setLoading(false)
       }
     } catch (error) {
       console.log('add-new-job', error);
       toast.error(`${error.response.data.error.message}`);
-      // setLoading(false)
+      setLoading(false)
     }
   }
   return {
